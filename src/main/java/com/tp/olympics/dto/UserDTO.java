@@ -1,4 +1,4 @@
-package main.java.com.tp.olympics.dto;
+package com.tp.olympics.dto;
 
 public class UserDTO {
     private Long id;

@@ -1,4 +1,4 @@
-package main.java.com.tp.olympics.repository;
+package com.tp.olympics.repository;
 
 import com.tp.olympics.entity.Stadium;
 import org.springframework.data.jpa.repository.JpaRepository;

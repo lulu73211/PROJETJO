@@ -8,18 +8,22 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests((authorizeRequests) ->
-                authorizeRequests
-                    .anyRequest().authenticated()
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/public/**").permitAll()
+                .anyRequest().authenticated()
             )
-            .formLogin(formLogin -> 
-                formLogin
-                    .defaultSuccessUrl("/", true)
+            .formLogin(form -> form
+                .loginPage("/login")
+                .permitAll()
+            )
+            .logout(logout -> logout
+                .permitAll()
             );
         return http.build();
     }

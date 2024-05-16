@@ -1,17 +1,34 @@
-package main.java.com.tp.olympics.security;
+package com.tp.olympics.security;
 
-import javax.annotation.Priority;
-import javax.ws.rs.Priorities;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.ext.Provider;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+
 import java.io.IOException;
 
-@Provider
-@Priority(Priorities.AUTHENTICATION)
-public class AuthenticationFilter implements ContainerRequestFilter {
+public class AuthenticationFilter extends BasicAuthenticationFilter {
+
+    public AuthenticationFilter() {
+        super(null);
+    }
+
     @Override
-    public void filter(ContainerRequestContext requestContext) throws IOException {
-        // Logic for authentication
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+
+        String header = request.getHeader("Authorization");
+
+        if (header == null || !header.startsWith("Bearer ")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
+        // Authentication logic here
+
+        SecurityContextHolder.getContext().setAuthentication(null);
+        chain.doFilter(request, response);
     }
 }

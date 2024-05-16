@@ -1,33 +1,27 @@
-package main.java.com.tp.olympics.controller;
+package com.tp.olympics.controller;
 
-import com.tp.olympics.dto.EventDTO;
+import com.tp.olympics.entity.Event;
 import com.tp.olympics.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/events")
+@RequestMapping("/events")
 public class EventController {
+
     @Autowired
     private EventService eventService;
 
     @PostMapping
-    public ResponseEntity<EventDTO> createEvent(@RequestBody EventDTO eventDTO) {
-        return ResponseEntity.ok(eventService.createEvent(eventDTO));
+    public ResponseEntity<Event> createEvent(@RequestBody Event event) {
+        Event savedEvent = eventService.createEvent(event);
+        return ResponseEntity.ok(savedEvent);
     }
 
-    @PutMapping("/open/{id}")
-    public ResponseEntity<Void> openEvent(@PathVariable Long id) {
-        eventService.openEvent(id);
-        return ResponseEntity.ok().build();
+    @PutMapping("/{id}")
+    public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestBody Event event) {
+        Event updatedEvent = eventService.updateEvent(id, event);
+        return ResponseEntity.ok(updatedEvent);
     }
-
-    @PutMapping("/close/{id}")
-    public ResponseEntity<Void> closeEvent(@PathVariable Long id) {
-        eventService.closeEvent(id);
-        return ResponseEntity.ok().build();
-    }
-
-    // Other endpoints...
 }

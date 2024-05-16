@@ -1,4 +1,4 @@
-package main.java.com.tp.olympics.repository;
+package com.tp.olympics.repository;
 
 import com.tp.olympics.entity.Ticket;
 import com.tp.olympics.entity.User;

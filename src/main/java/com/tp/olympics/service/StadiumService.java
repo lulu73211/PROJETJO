@@ -1,8 +1,5 @@
-package main.java.com.tp.olympics.service;
+package com.tp.olympics.service;
 
-
-
-import com.tp.olympics.dto.StadiumDTO;
 import com.tp.olympics.entity.Stadium;
 import com.tp.olympics.repository.StadiumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,17 +7,18 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class StadiumService {
+
     @Autowired
     private StadiumRepository stadiumRepository;
 
-    public StadiumDTO createStadium(StadiumDTO stadiumDTO) {
-        Stadium stadium = new Stadium();
-        stadium.setName(stadiumDTO.getName());
-        stadium.setCapacity(stadiumDTO.getCapacity());
-        stadiumRepository.save(stadium);
-        stadiumDTO.setId(stadium.getId());
-        return stadiumDTO;
+    public Stadium createStadium(Stadium stadium) {
+        return stadiumRepository.save(stadium);
     }
 
-    // Other methods...
+    public Stadium updateStadium(Long id, Stadium stadium) {
+        Stadium existingStadium = stadiumRepository.findById(id).orElseThrow(() -> new RuntimeException("Stadium not found"));
+        existingStadium.setName(stadium.getName());
+        existingStadium.setLocation(stadium.getLocation());
+        return stadiumRepository.save(existingStadium);
+    }
 }
